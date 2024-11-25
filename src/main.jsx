@@ -6,7 +6,7 @@ import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } 
 import Layout from './Layout.jsx'
 import Header from './components/Header/Header.jsx'
 import Navbar from './components/Navbar/Navbar'
-import Note from './components/Note/Note.jsx'
+import Note from './components/Note/Notes.jsx'
 
 const router = createBrowserRouter([
   {
