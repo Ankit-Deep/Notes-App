@@ -9,22 +9,16 @@ import {
   Route,
 } from "react-router-dom";
 import Layout from "./Layout.jsx";
-import Header from "./components/Header/Header";
-import Navbar from "./components/Navbar/Navbar";
-import Note from "./components/Note/Notes";
+import Notes from "./components/Note/Notes";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    children: [
-      {
-        path: "",
-        element: <Note />,
-      },
-    ],
-  },
-]);
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Layout/>} >
+      <Route path="" element={<Notes/>} />
+      {/* <Route path="search" element={<Search/>} /> */}
+    </Route>
+  )
+)
 
 
 createRoot(document.getElementById("root")).render(

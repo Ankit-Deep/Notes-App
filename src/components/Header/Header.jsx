@@ -14,8 +14,6 @@ function Header() {
 
       </section>
 
-      {/* This is the navbar basically where create note & search note options are */}
-      <Navbar />
     </>
   );
 }

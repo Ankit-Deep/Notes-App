@@ -1,6 +1,8 @@
 import React from "react";
-import createNewNote from "../Note/Notes.jsx";
+// import createNewNote from "../Note/Notes.jsx";
 import { NavLink } from "react-router-dom";
+import setNotes from "../Note/Notes";
+import Notes from "../Note/Notes";
 
 function Navbar() {
   return (
@@ -11,9 +13,7 @@ function Navbar() {
           to="/"
           className="bg-white dark:bg-gray-700 w-6/12 text-center py-2 border-1 rounded-lg shadow-sm shadow-black"
         >
-          <button className="" onClick={createNewNote}>
-            ➕ Note
-          </button>
+          <button onClick={setNotes}>➕ Note</button>
         </NavLink>
 
         {/* Search Button */}
