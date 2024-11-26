@@ -1,14 +1,14 @@
-import React from 'react';
-import { useState } from 'react'
-
+import React, { useState, useEffect } from "react";
+import Layout from "./Layout";
 
 function App() {
+  
 
   return (
     <>
-      
+      <Layout />
     </>
   );
 }
 
-export default App
+export default App;
