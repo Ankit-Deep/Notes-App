@@ -1,43 +1,37 @@
-import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
-import ReactDOM from "react-dom/client";
-
-// Individual Note component
-// const Note = ({note}) => {
-//   return (
-//     <>
-//       <div className="">
-//         <div className="top-section">
-//           <h1>Top Section</h1>
-//         </div>
-
-//         <div>
-//           <textarea name="" id=""></textarea>
-//         </div>
-
-//         <div className="bottom-section">
-//           <h2>Bottom Section</h2>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
+import React, { act, useEffect, useState } from "react";
 
 function Notes() {
   const [notesList, setNotesList] = useState([]);
 
   // Function to create new notes component whenever button is clicked
   const createNewNote = () => {
+    
     console.log("Ankit");
-
+    
     const newComponent = { id: Date.now() };
     setNotesList([...notesList, newComponent]);
+
+    console.log(notesList);
   };
+
+
+  // Function to delete a particular note
+  const deleteThisNote = (e) => {
+    const note = e.target.parentElement;
+    const actualNote = note.parentElement.parentElement;
+
+    actualNote.remove();
+
+    // const newList = notesList.filter((item) => item.id === actualNote.id);
+    
+    console.log(notesList);
+    
+  }
 
   return (
     <>
       <section className="bg-white dark:bg-black text-black dark:text-white w-full flex justify-around py-4 px-5 gap-4 text-lg ">
-        {/* Create New Note */}
+        {/* Create New Note Button */}
         <button
           className="bg-white dark:bg-gray-700 w-6/12 text-center py-2 border-1 rounded-lg shadow-sm shadow-black"
           onClick={createNewNote}
@@ -71,11 +65,12 @@ function Notes() {
                     <div className="w-full flex py-1 px-2 justify-between">
                       <i
                         id="moreOptions"
-                        class="fa-solid fa-ellipsis  cursor-pointer "
+                        className="fa-solid fa-ellipsis  cursor-pointer "
                       ></i>
                       <i
                         id="deleteNote"
-                        class="fa-solid fa-trash-can  cursor-pointer "
+                        className="fa-solid fa-trash-can  cursor-pointer "
+                        onClick={deleteThisNote}
                       ></i>
                     </div>
                   </div>
@@ -91,7 +86,7 @@ function Notes() {
 
                   <div className="bottom-section border-2 ">
                     <div className="float-right px-2 text-xl cursor-pointer rounded hover:bg-slate-100 h-full">
-                      <i class="fa-solid fa-check"></i>
+                      <i className="fa-solid fa-check"></i>
                     </div>
                   </div>
                 </div>
