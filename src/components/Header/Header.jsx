@@ -1,20 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTheme } from "../../contexts/Theme/theme";
 
 
 function Header() {
   // useTheme is a custom hook that I created
   const {themeMode, lightTheme, darkTheme} = useTheme();
-
+  
+  // State for the themes class (Dark or light)
+  const [currTheme, setCurrTheme] = useState("fa-sun");
+ 
   const changeTheme = (e) =>  {
-    if (e.target.classList[1] == "fa-sun") {
-      e.target.classList.replace("fa-sun", "fa-moon");
+    if (e.target.classList[1] === "fa-sun") {
+      localStorage.setItem("themeClass", "fa-moon");
+      setCurrTheme("fa-moon");
       darkTheme();
     } else {
-      e.target.classList.replace("fa-moon", "fa-sun");
+      localStorage.setItem("themeClass", "fa-sun");
+      setCurrTheme("fa-sun");
       lightTheme();
     }
   }
+
+  useEffect(() => {
+    const currentThemeClass = localStorage.getItem("themeClass");
+    setCurrTheme(currentThemeClass);
+  }, [changeTheme]);
 
   return (
     <>
@@ -25,7 +35,7 @@ function Header() {
 
         <div className=" ">
           <i
-            className="fa-solid fa-sun cursor-pointer"
+            className={`fa-solid ${currTheme} cursor-pointer`}
             onClick={changeTheme}
           ></i>
         </div>

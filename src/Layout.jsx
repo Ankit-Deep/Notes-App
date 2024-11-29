@@ -9,16 +9,23 @@ function Layout() {
   // Functions to change the theme
   const lightTheme = () => {
     setThemeMode("light");
+    localStorage.setItem("theme", "light");
   }
   
   const darkTheme = () => {
     setThemeMode("dark");
+    localStorage.setItem("theme", "dark");
   }
 
-  useEffect( () => {
-    document.querySelector('html').classList.remove("light", "dark");
-    document.querySelector('html').classList.add(themeMode);
-  }, [themeMode])
+  // Change the theme of the app even when the browser is refreshed
+  useEffect(() => {
+    document.querySelector("html").classList.remove("light", "dark");
+    document.querySelector("html").classList.add(themeMode);
+
+    // Used local storage to set the theme
+    const appTheme = localStorage.getItem("theme");
+    setThemeMode(appTheme);
+  }, [themeMode, setThemeMode]);
 
   return (
     <>
