@@ -7,7 +7,7 @@ function Header() {
   const {themeMode, lightTheme, darkTheme} = useTheme();
   
   // State for the themes class (Dark or light)
-  const [currTheme, setCurrTheme] = useState("fa-sun");
+  const [currTheme, setCurrTheme] = React.useState("fa-sun");
  
   const changeTheme = (e) =>  {
     if (e.target.classList[1] === "fa-sun") {
@@ -33,9 +33,9 @@ function Header() {
           <h1>📝 Notes App</h1>
         </div>
 
-        <div className=" ">
+        <div className="">
           <i
-            className={`fa-solid ${currTheme} cursor-pointer`}
+            className={ `fa-solid ${currTheme} cursor-pointer`}
             onClick={changeTheme}
           ></i>
         </div>

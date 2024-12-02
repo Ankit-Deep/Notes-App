@@ -1,15 +1,23 @@
-import React, { act, useEffect, useRef, useState } from "react";
+import React, { act, useCallback, useEffect, useRef, useState } from "react";
 
 function Notes() {
   // State for managing individual Note Bg color change
-  const [noteBg, setNoteBg] = useState("lightblue");           
+  const [noteBg, setNoteBg] = useState("lightblue");
+
+  // State for managing the copy message to show the user if it copied or not
+  const [copyMessage, setCopyMessage] = useState("Copy");
 
   const [notesList, setNotesList] = useState([]);
 
   // Load saved notes from localStorage when the component mounts (Done with ChatGPT help)
   useEffect(() => {
-    const savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
-    setNotesList(savedNotes);
+    const savedNotes = localStorage.getItem("notes");
+    try {
+      setNotesList(savedNotes ? JSON.parse(savedNotes) : []); // Ensure valid JSON parsing
+    } catch (error) {
+      console.error("Error parsing notes from localStorage:", error);
+      setNotesList([]); // Reset to an empty list in case of error
+    }
   }, []);
 
   // Function to create new notes component whenever button is clicked (Done with ChatGPT help)
@@ -19,12 +27,18 @@ function Notes() {
   };
 
   // Function to add Notes to local stroage : (Done with ChatGPT help)
-  const saveNote = (id, content) => {
+  const saveNote = (id, content, color) => {
     const updatedNotes = notesList.map((note) =>
       note.id === id ? { ...note, content } : note
     );
     setNotesList(updatedNotes);
     localStorage.setItem("notes", JSON.stringify(updatedNotes)); // Save to localStorage
+
+    // const updatedColoredNotes = notesList.map((note) =>
+    //   note.id === id ? { ...note, color } : note
+    // );
+    // setNotesList(updatedColoredNotes);
+
   };
 
   // Function to delete a particular note (Done with ChatGPT help)
@@ -36,16 +50,46 @@ function Notes() {
 
   // Function to change individual note theme
   const changeNoteColor = (id, e, color) => {
-    const div = e.target.parentElement;
-    const colorNote = div.parentElement.parentElement.parentElement;
-    const colorTextArea = div.parentElement.parentElement.parentElement.children[1].firstChild;
+    // const div = e.target.parentElement;
+    // const colorNote = div.parentElement.parentElement.parentElement;
+    // const colorTextArea =
+    // div.parentElement.parentElement.parentElement.children[1].firstChild;
     // console.log("sibling : ", colorTextArea);
 
-    colorNote.style.backgroundColor = color;
-    colorTextArea.style.backgroundColor = color;
+    // colorNote.style.backgroundColor = color;
+    // colorTextArea.style.backgroundColor = color;
 
     // console.log("div id ", colorNote);
+
+    const updatedNotes = notesList.map((note) =>
+      note.id === id ? { ...note, color } : note
+    );
+    setNotesList(updatedNotes);
   };
+
+  // useRef hook for copying the note text
+  // const noteRef = useRef(null);
+
+  const copyThisNote = useCallback((e, id, content) => {
+    
+    // const copyMessageNote = notesList.map((note) => 
+    //   note.id === id ? setCopyMessage("Copied !") : setCopyMessage("Copy")
+    // );
+    // // setNotesList(copyMessageNote);
+    
+
+    const div = e.target.parentElement;
+    console.log(div);
+
+    const noteContent =
+      div.parentElement.parentElement.parentElement.children[1];
+    console.log(noteContent);
+
+    // const noteContentCopy = noteContent.textContent;
+    // noteContentCopy?.select();
+
+    window.navigator.clipboard.writeText(noteContent.textContent);
+  }, []);
 
   return (
     <>
@@ -71,7 +115,7 @@ function Notes() {
       {/* Section where all the notes will be added */}
       <main className="bg-white dark:bg-black text-black dark:text-white w-full px-4 py-2">
         <h3 className="sm:px-3 px-1">Recent Notes</h3>
-        <hr className="mx-1 my-4"/>
+        <hr className="mx-1 my-4" />
 
         {/* Section where all the notes will be added, shown etc */}
         <section id="addNote" className="">
@@ -84,8 +128,9 @@ function Notes() {
                 <div
                   className="rounded-lg py-3 px-2 w-full sm:w-[32%] h-60 flex flex-col gap-2 justify-between border-t-slate-700 dark:border-t-slate-100 shadow-gray-800 shadow-lg dark:shadow-md dark:shadow-gray-200"
                   key={note.id}
+                  // backgroundColor={"red"}
                   style={{
-                    backgroundColor: `${noteBg}`,
+                    backgroundColor: note.color,
                     borderTopWidth: "5px",
                     // borderTopColor: "black",
                   }}
@@ -95,6 +140,7 @@ function Notes() {
                     <div className=" w-full flex py-1 px-2 justify-between items-center">
                       <div className="border-black flex gap-2">
                         <span
+                          title="Select color before typing something"
                           className="w-5 h-5 cursor-pointer rounded-full hover:shadow-lg hover:shadow-gray-400"
                           style={{ backgroundColor: "lightblue" }}
                           onClick={(e) =>
@@ -102,6 +148,7 @@ function Notes() {
                           }
                         ></span>
                         <span
+                          title="Select color before typing something"
                           className="w-5 h-5 cursor-pointer rounded-full hover:shadow-lg hover:shadow-gray-400"
                           style={{ backgroundColor: "lightgreen" }}
                           onClick={(e) =>
@@ -109,6 +156,7 @@ function Notes() {
                           }
                         ></span>
                         <span
+                          title="Select color before typing something"
                           className="w-5 h-5 cursor-pointer rounded-full hover:shadow-lg hover:shadow-gray-400"
                           style={{ backgroundColor: "lightpink" }}
                           onClick={(e) =>
@@ -116,6 +164,7 @@ function Notes() {
                           }
                         ></span>
                         <span
+                          title="Select color before typing something"
                           className="w-5 h-5 cursor-pointer rounded-full hover:shadow-lg hover:shadow-gray-400"
                           style={{ backgroundColor: "lightcoral" }}
                           onClick={(e) =>
@@ -123,6 +172,7 @@ function Notes() {
                           }
                         ></span>
                         <span
+                          title="Select color before typing something"
                           className="w-5 h-5 cursor-pointer rounded-full hover:shadow-lg hover:shadow-gray-400"
                           style={{ backgroundColor: "lightsalmon" }}
                           onClick={(e) =>
@@ -130,6 +180,7 @@ function Notes() {
                           }
                         ></span>
                         <span
+                          title="Select color before typing something"
                           className="w-5 h-5 cursor-pointer rounded-full hover:shadow-lg hover:shadow-gray-400"
                           style={{ backgroundColor: "lightyellow" }}
                           onClick={(e) =>
@@ -137,6 +188,7 @@ function Notes() {
                           }
                         ></span>
                         <span
+                          title="Select color before typing something"
                           className="w-5 h-5 cursor-pointer rounded-full hover:shadow-lg hover:shadow-gray-400"
                           style={{ backgroundColor: "lightslategrey" }}
                           onClick={(e) =>
@@ -147,7 +199,7 @@ function Notes() {
                       <i
                         title="Delete"
                         id="deleteNote"
-                        className="fa-solid fa-trash-can  cursor-pointer text-gray-600 hover:text-black"
+                        className="rounded-md p-1 hover:bg-gray-200  fa-solid fa-trash-can  cursor-pointer text-gray-600 hover:text-black"
                         onClick={() => deleteThisNote(note.id)}
                       ></i>
                     </div>
@@ -156,27 +208,37 @@ function Notes() {
 
                   {/* Text area for writing note starts */}
                   <div className=" border-black h-full">
-                    <textarea
-                      className="px-2 w-full h-full resize-none border-collapse focus:outline-none"
+                    <textarea 
+                      className="px-2 w-full h-full resize-none border-collapse focus:outline-none overflow-hidden bg-scroll"
                       placeholder="Type anything to remember..."
-                      style={{ backgroundColor: "lightblue", color: "black" }}
+                      // key={note.color}
+                      style={{ backgroundColor: "inherit", color: "black" }}
                       value={note.content}
                       onChange={(e) => saveNote(note.id, e.target.value)}
-                    ></textarea>
+                    ></textarea> 
                   </div>
                   {/* Text area for writing note starts ends */}
 
                   {/* Bottom div starts for tick the note & features like (bold, italic, underline etc...) */}
-                  <div className=" border-black bottom-section ">
-                    <div className="float-right px-2 text-xl cursor-pointer rounded h-full">
+                  <div className=" border-black bottom-section flex justify-between px-2">
+                    <div className="  text-xl cursor-pointer rounded h-full flex items-center">
                       <button
-                        id="saveNote"
-                        // onClick={}
+                        id="copyNote"
+                        className="rounded-md px-1 hover:bg-gray-200 text-gray-700 hover:text-black"
+                        onClick={(e) => copyThisNote(e, note.id, note.content)}
                       >
-                        <i
-                          title="Done/Close"
-                          className="fa-solid fa-check text-gray-600 hover:text-black"
-                        ></i>
+                        <i className="fa-solid fa-copy"></i>
+                      </button>
+                      {/* <p className="text-gray-800 text-base">{copyMessage}</p> */}
+                    </div>
+                    <div>
+                      <button
+                        className=" rounded-md px-1 hover:bg-gray-200  text-gray-700 hover:text-black text-xl"
+                        onClick={(e) =>
+                          saveNote(note.id, note.content, note.color)
+                        }
+                      >
+                        <i class="fa-solid fa-check"></i>
                       </button>
                     </div>
                   </div>
