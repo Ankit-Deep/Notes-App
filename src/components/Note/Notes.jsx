@@ -211,7 +211,6 @@ function Notes() {
                     <textarea 
                       className="px-2 w-full h-full resize-none border-collapse focus:outline-none overflow-hidden bg-scroll"
                       placeholder="Type anything to remember..."
-                      // key={note.color}
                       style={{ backgroundColor: "inherit", color: "black" }}
                       value={note.content}
                       onChange={(e) => saveNote(note.id, e.target.value)}
