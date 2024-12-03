@@ -226,7 +226,7 @@ function Notes() {
                         className="rounded-md px-1 hover:bg-gray-200 text-gray-700 hover:text-black"
                         onClick={(e) => copyThisNote(e, note.id, note.content)}
                       >
-                        <i className="fa-solid fa-copy"></i>
+                        <i title="Copy" className="fa-solid fa-copy"></i>
                       </button>
                       {/* <p className="text-gray-800 text-base">{copyMessage}</p> */}
                     </div>
@@ -237,7 +237,7 @@ function Notes() {
                           saveNote(note.id, note.content, note.color)
                         }
                       >
-                        <i class="fa-solid fa-check"></i>
+                        <i title="Save" className="fa-solid fa-check"></i>
                       </button>
                     </div>
                   </div>
